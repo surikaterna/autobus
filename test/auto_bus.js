@@ -30,12 +30,47 @@ describe('AutoBus', function() {
 		it('send fail with two subscribers', function(done) {
 			var bus = new AutoBus();
 			bus.join('test', function(m) {
-				done();
 			});
 			bus.join('test', function(m) {
+			});
+			try
+			{
+				bus.send('test', {x:1});
+				done('should trow on send with multiple subscribers');
+			} catch(e) {
+				done();
+			}
+		});
+		it('send without listener', function(done) {
+			var bus = new AutoBus();
+			bus.send('test', {x:1});
+			done();			
+		});
+		it('publish without listener', function(done) {
+			var bus = new AutoBus();
+			bus.publish('test', {x:1});
+			done();			
+		});
+		it('join with wildcard', function(done) {
+			var bus = new AutoBus();
+			bus.join('test.*.command', function(m) {
 				done();
 			});
-			bus.send('test', {x:1});
+			bus.publish('test.wildcard.command', {x:1});
+		});
+	});
+	describe('#use', function() {
+		it('calls middleware', function(done) {
+			var bus = new AutoBus();
+			var called = false;
+			bus.use(function(err, message) {
+				done();
+			});
+			bus.join('home', function(m) {
+				console.log(m);
+			});
+			bus.publish('home', 'test');
+			called.should.equal(true);
 		});
 	});
 
