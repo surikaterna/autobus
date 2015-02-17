@@ -63,14 +63,14 @@ describe('AutoBus', function() {
 		it('calls middleware', function(done) {
 			var bus = new AutoBus();
 			var called = false;
-			bus.use(function(err, message) {
+			bus.use(function(message, next) {
 				done();
 			});
+
 			bus.join('home', function(m) {
-				console.log(m);
+				console.log("got" + m);
 			});
 			bus.publish('home', 'test');
-			called.should.equal(true);
 		});
 	});
 
