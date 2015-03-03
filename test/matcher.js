@@ -31,7 +31,13 @@ describe('Matcher', function() {
 			var matcher= new Matcher();
 			matcher.add('a**b*a');
 			matcher.match('abba').length.should.equal(1);
-		});		
+		});	
+		it('match twice with dobule wildcard', function() {		
+			var matcher= new Matcher();
+			matcher.add('a**b*a');
+			matcher.match('abba').length.should.equal(1);
+			matcher.match('abba').length.should.equal(1);
+		});	
 		it('match with ?', function() {		
 			var matcher= new Matcher();
 			matcher.add('a??a');

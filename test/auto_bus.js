@@ -58,6 +58,21 @@ describe('AutoBus', function() {
 			});
 			bus.publish('test.wildcard.command', {x:1});
 		});
+		it('publish multiple on wildcard', function(done) {
+			var bus = new AutoBus();
+			var count=0;
+			var TEST_COUNT=1000;
+			bus.join('test.*.command', function(m) {
+				count++;
+			});
+			for(var i=0;i<TEST_COUNT;i++) {
+				bus.publish('test.wildcard.command', {x:i});
+			}
+			process.nextTick(function(){
+				count.should.equal(TEST_COUNT);
+				done();
+			});
+		});		
 	});
 	describe('#leave', function() {
 		it('leave should remove listener', function(done) {
