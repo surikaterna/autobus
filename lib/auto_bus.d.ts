@@ -9,7 +9,7 @@ export interface NextFunc<T> {
 }
 
 export default class AutoBus {
-  constructor(transport: LocalTransport);
+  constructor(transport?: LocalTransport);
 
   join<T>(channel: string, listener: Listener<T>): void;
   leave<T>(channel: string, listener: Listener<T>): void;
